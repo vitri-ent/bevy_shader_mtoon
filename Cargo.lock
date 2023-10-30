@@ -652,13 +652,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "bevy_mat_mtoon"
-version = "0.0.1"
-dependencies = [
- "bevy",
-]
-
-[[package]]
 name = "bevy_math"
 version = "0.11.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -823,6 +816,13 @@ dependencies = [
  "serde",
  "thiserror",
  "uuid",
+]
+
+[[package]]
+name = "bevy_shader_mtoon"
+version = "0.0.1"
+dependencies = [
+ "bevy",
 ]
 
 [[package]]

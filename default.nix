@@ -27,9 +27,10 @@ let
     LD_LIBRARY_PATH = lib.makeLibraryPath build_inputs;
   };
 in {
-  lib = rustPlatform.buildRustPackage (common // { pname = "bevy_mat_mtoon"; });
+  lib =
+    rustPlatform.buildRustPackage (common // { pname = "bevy_shader_mtoon"; });
   wasm = rustPlatformWasm.buildRustPackage (common // {
-    pname = "bevy_mat_mtoon";
+    pname = "bevy_shader_mtoon";
     buildPhase = ''
       cargo build --target ${wasmTarget} --profile wasm-release
     '';
