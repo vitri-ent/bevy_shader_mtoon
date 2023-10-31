@@ -87,7 +87,7 @@ fn fragment (in: MeshVertexOutput) -> @location(0) vec4<f32> {
     rim = rim * mix(VEC4_ONE, material.light_color, material.rim_lighting_mix_factor);
 
     color = color + rim;
-    
+
     return color;
 }
 

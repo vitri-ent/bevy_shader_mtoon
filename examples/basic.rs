@@ -49,13 +49,13 @@ fn setup(
 
     let mtoon_textured = mtoon_materials.add(MtoonMaterial {
         base_color_texture: Some(images.add(uv_debug_texture())),
+        shading_shift_factor: 0.5,
         ..default()
     });
 
     let mtoon = mtoon_materials.add(MtoonMaterial {
-        base_color: Color::PINK * 4.0,
-        shade_color: Color::MIDNIGHT_BLUE,
-        shading_toony_factor: 0.95,
+        base_color: Color::BISQUE,
+        shade_color: Color::SALMON,
         ..default()
     });
 
