@@ -25,12 +25,20 @@ impl Plugin for MtoonPlugin {
 pub struct MtoonMaterial {
     pub base_color: Color,
     pub shade_color: Color,
-    pub ambient_color: Color,
-    pub light_color: Color,
     pub light_dir: Vec3,
     pub shading_shift_factor: f32,
     pub shading_toony_factor: f32,
+    pub light_color: Color,
+
+    pub ambient_color: Color,
     pub gl_equalization_factor: f32,
+
+    pub view_dir: Vec3,
+    pub matcap_factor: Vec4,
+    pub parametric_rim_color: Color,
+    pub parametric_rim_fresnel_power: f32,
+    pub parametric_rim_lift_factor: f32,
+    pub rim_lighting_mix_factor: f32,
 
     #[texture(1)]
     #[sampler(2)]
@@ -40,7 +48,10 @@ pub struct MtoonMaterial {
     pub shade_color_texture: Option<Handle<Image>>,
     #[texture(5)]
     #[sampler(6)]
-    pub normal_texture: Option<Handle<Image>>,
+    pub matcap_texture: Option<Handle<Image>>,
+    #[texture(7)]
+    #[sampler(8)]
+    pub rim_multiply_texture: Option<Handle<Image>>,
 }
 
 impl Default for MtoonMaterial {
@@ -48,15 +59,25 @@ impl Default for MtoonMaterial {
         Self {
             base_color: Color::WHITE,
             shade_color: Color::BLACK,
-            ambient_color: Color::WHITE,
-            light_color: Color::WHITE,
             light_dir: Vec3::Y,
             shading_shift_factor: 0.0,
             shading_toony_factor: 0.9,
+            light_color: Color::WHITE,
+
+            ambient_color: Color::WHITE,
             gl_equalization_factor: 0.9,
+
+            view_dir: Vec3::ZERO,
+            matcap_factor: Vec4::ZERO,
+            parametric_rim_color: Color::WHITE,
+            parametric_rim_fresnel_power: 5.0,
+            parametric_rim_lift_factor: 0.0,
+            rim_lighting_mix_factor: 1.0,
+
             base_color_texture: None,
             shade_color_texture: None,
-            normal_texture: None,
+            matcap_texture: None,
+            rim_multiply_texture: None,
         }
     }
 }
@@ -71,12 +92,20 @@ impl Material for MtoonMaterial {
 pub struct MtoonMaterialUniform {
     pub base_color: Vec4,
     pub shade_color: Vec4,
-    pub ambient_color: Vec4,
-    pub light_color: Vec4,
     pub light_dir: Vec3,
     pub shading_shift_factor: f32,
     pub shading_toony_factor: f32,
+    pub light_color: Vec4,
+
+    pub ambient_color: Vec4,
     pub gl_equalization_factor: f32,
+
+    pub view_dir: Vec3,
+    pub matcap_factor: Vec4,
+    pub parametric_rim_color: Vec4,
+    pub parametric_rim_fresnel_power: f32,
+    pub parametric_rim_lift_factor: f32,
+    pub rim_lighting_mix_factor: f32,
 }
 
 impl AsBindGroupShaderType<MtoonMaterialUniform> for MtoonMaterial {
@@ -87,12 +116,20 @@ impl AsBindGroupShaderType<MtoonMaterialUniform> for MtoonMaterial {
         MtoonMaterialUniform {
             base_color: self.base_color.into(),
             shade_color: self.shade_color.into(),
-            ambient_color: self.ambient_color.into(),
-            light_color: self.light_color.into(),
             light_dir: self.light_dir,
             shading_shift_factor: self.shading_shift_factor,
             shading_toony_factor: self.shading_toony_factor,
+            light_color: self.light_color.into(),
+
+            ambient_color: self.ambient_color.into(),
             gl_equalization_factor: self.gl_equalization_factor,
+
+            view_dir: self.view_dir,
+            matcap_factor: self.matcap_factor,
+            parametric_rim_color: self.parametric_rim_color.into(),
+            parametric_rim_fresnel_power: self.parametric_rim_fresnel_power,
+            parametric_rim_lift_factor: self.parametric_rim_lift_factor,
+            rim_lighting_mix_factor: self.rim_lighting_mix_factor,
         }
     }
 }
@@ -111,7 +148,7 @@ pub fn update_mtoon_shader(
 ) {
     for (_, mtoon) in materials.iter_mut() {
         if let Ok(cam_t) = main_cam.get_single() {
-            // mtoon.camera_pos = cam_t.translation;
+            mtoon.view_dir = cam_t.back();
         }
 
         if let Ok((transform, light)) = sun.get_single() {
