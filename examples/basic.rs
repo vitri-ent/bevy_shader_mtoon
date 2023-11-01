@@ -38,10 +38,7 @@ fn setup(
                 illuminance: 10_000.,
                 ..default()
             },
-            transform: Transform {
-                translation: Vec3::new(2.0, 2.0, 2.0),
-                ..default()
-            },
+            transform: Transform::from_xyz(2.0, 2.0, 2.0),
             ..default()
         },
         MtoonSun,

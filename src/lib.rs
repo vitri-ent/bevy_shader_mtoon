@@ -6,7 +6,7 @@ use bevy::{
 };
 
 pub const MTOON_SHADER_HANDLE: HandleUntyped =
-    HandleUntyped::weak_from_u64(Shader::TYPE_UUID, 11079857777321825555);
+    HandleUntyped::weak_from_u64(Shader::TYPE_UUID, 0x2d86c40a175b);
 
 #[derive(Default)]
 pub struct MtoonPlugin;
