@@ -42,13 +42,13 @@ var rim_multiply_texture: texture_2d<f32>;
 @group(1) @binding(8)
 var rim_multiply_sampler: sampler;
 
-#import bevy_pbr::mesh_vertex_output::MeshVertexOutput
+#import bevy_pbr::forward_io::VertexOutput
 
 const RIM_EPSILON = 0.00001;
 const VEC4_ONE = vec4<f32>(1.0, 1.0, 1.0, 1.0);
 
 @fragment
-fn fragment (in: MeshVertexOutput) -> @location(0) vec4<f32> {
+fn fragment (in: VertexOutput) -> @location(0) vec4<f32> {
     // Base lighting
     // TODO: Doesn't use shading_shift_texture
     let base_color = material.base_color * textureSample(base_color_texture, base_color_sampler, in.uv);
