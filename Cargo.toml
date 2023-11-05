@@ -23,4 +23,4 @@ inherits = "release"
 opt-level = 'z'
 
 [dependencies]
-bevy = "0.11.3"
+bevy = "0.12.0"

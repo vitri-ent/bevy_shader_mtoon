@@ -1,12 +1,11 @@
 use bevy::{
-    asset::load_internal_asset,
+    asset::{load_internal_asset, VisitAssetDependencies},
     prelude::*,
     reflect::{TypePath, TypeUuid},
     render::render_resource::{AsBindGroup, AsBindGroupShaderType, ShaderRef, ShaderType},
 };
 
-pub const MTOON_SHADER_HANDLE: HandleUntyped =
-    HandleUntyped::weak_from_u64(Shader::TYPE_UUID, 0x2d86c40a175b);
+pub const MTOON_SHADER_HANDLE: Handle<Shader> = Handle::weak_from_u128(0x2d86c40a175b);
 
 #[derive(Default)]
 pub struct MtoonPlugin;
@@ -19,7 +18,7 @@ impl Plugin for MtoonPlugin {
     }
 }
 
-#[derive(AsBindGroup, TypeUuid, TypePath, Debug, Clone)]
+#[derive(Asset, AsBindGroup, TypeUuid, TypePath, Debug, Clone)]
 #[uuid = "c114d3b1-2274-4733-99df-f1fb5fd80bd1"]
 #[uniform(0, MtoonMaterialUniform)]
 pub struct MtoonMaterial {
@@ -84,7 +83,7 @@ impl Default for MtoonMaterial {
 
 impl Material for MtoonMaterial {
     fn fragment_shader() -> ShaderRef {
-        MTOON_SHADER_HANDLE.typed().into()
+        MTOON_SHADER_HANDLE.into()
     }
 }
 
