@@ -1,5 +1,5 @@
 use bevy::{
-    asset::{load_internal_asset, VisitAssetDependencies},
+    asset::load_internal_asset,
     prelude::*,
     reflect::{TypePath, TypeUuid},
     render::render_resource::{AsBindGroup, AsBindGroupShaderType, ShaderRef, ShaderType},
