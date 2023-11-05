@@ -18,7 +18,7 @@ impl Plugin for MtoonPlugin {
     }
 }
 
-#[derive(AsBindGroup, TypeUuid, TypePath, Debug, Clone)]
+#[derive(Asset, AsBindGroup, TypeUuid, TypePath, Debug, Clone)]
 #[uuid = "c114d3b1-2274-4733-99df-f1fb5fd80bd1"]
 #[uniform(0, MtoonMaterialUniform)]
 pub struct MtoonMaterial {
@@ -80,12 +80,6 @@ impl Default for MtoonMaterial {
         }
     }
 }
-
-impl VisitAssetDependencies for MtoonMaterial {
-    fn visit_dependencies(&self, _: &mut impl FnMut(bevy::asset::UntypedAssetId)) {}
-}
-
-impl Asset for MtoonMaterial {}
 
 impl Material for MtoonMaterial {
     fn fragment_shader() -> ShaderRef {
