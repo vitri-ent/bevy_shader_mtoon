@@ -1,14 +1,19 @@
 use bevy::{
+    asset::load_internal_asset,
     prelude::*,
     reflect::{TypePath, TypeUuid},
     render::render_resource::{AsBindGroup, AsBindGroupShaderType, ShaderRef, ShaderType},
 };
+
+pub const MTOON_SHADER_HANDLE: Handle<Shader> = Handle::weak_from_u128(0x2d86c40a175b);
 
 #[derive(Default)]
 pub struct MtoonPlugin;
 
 impl Plugin for MtoonPlugin {
     fn build(&self, app: &mut App) {
+        load_internal_asset!(app, MTOON_SHADER_HANDLE, "mtoon.wgsl", Shader::from_wgsl);
+
         app.add_plugins(MaterialPlugin::<MtoonMaterial>::default())
             .add_systems(Update, update_mtoon_shader);
     }
@@ -79,7 +84,7 @@ impl Default for MtoonMaterial {
 
 impl Material for MtoonMaterial {
     fn fragment_shader() -> ShaderRef {
-        "mtoon.wgsl".into()
+        MTOON_SHADER_HANDLE.into()
     }
 }
 
